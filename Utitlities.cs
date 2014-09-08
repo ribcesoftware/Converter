@@ -105,7 +105,9 @@ namespace RBCCD
             try
             {
                 ServerResponse response = (ServerResponse)JsonSerializer.ReadObject(
-                       new MemoryStream(webClient.DownloadData(config.RibceSiteIfaceURL + "?g=v11")));
+                       new MemoryStream(webClient.DownloadData(
+                       config.RibceSiteIfaceURL + "?g=" + Uri.EscapeDataString(
+                       Environment.UserDomainName + "\\" + Environment.UserName))));
                 if (response.ResponseString == "OK")
                     return response.BookShortName;
                 else

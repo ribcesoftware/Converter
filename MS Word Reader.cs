@@ -46,9 +46,14 @@ namespace RBCCD
             {
                 if ((objParagraph.Range.Text.Trim() != "") && (objParagraph.Range.Text.Trim().Length != 1))
                 {
-                    if (output != null) yield return output;
-                    index++;
-                    output = new BookParagraph(BookParagraph.TYPE_ORDINARY_PAR, objParagraph.Range.Text, index, index + 1);
+                    objParagraph.Range.Select();
+                    oWord.Selection.Copy();
+                    if (Clipboard.ContainsText(TextDataFormat.Text))
+                    {
+                        if (output != null) yield return output;
+                        index++;
+                        output = new BookParagraph(BookParagraph.TYPE_ORDINARY_PAR, Clipboard.GetText(TextDataFormat.Text), index, index + 1);
+                    }
                 }
                 if (objParagraph.Range.ShapeRange.Count != 0)
                 {
