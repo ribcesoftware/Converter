@@ -13,6 +13,7 @@ namespace RBCCD
         private int maxDownloadAttempt;
         private int maxNotificationAttempt;
         private int maxUploadAttempt;
+        private int waitBeforeStartSeconds;
 
         public string LogFile
         {
@@ -59,6 +60,11 @@ namespace RBCCD
             get { return maxUploadAttempt; }
         }
 
+        public int WaitBeforeStartSeconds
+        {
+            get { return waitBeforeStartSeconds; }
+        }
+
         public Config()
         {
             logToConsole = true;
@@ -70,6 +76,7 @@ namespace RBCCD
             maxDownloadAttempt = 3;
             maxNotificationAttempt = 3;
             maxUploadAttempt = 3;
+            waitBeforeStartSeconds = 10;
         }
     }
 }

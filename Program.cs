@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Reflection;
+using System.Drawing;
+using System.Text;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Threading;
 
@@ -6,6 +10,44 @@ namespace RBCCD
 {
     class Program
     {
+        [DllImport("kernel32.dll")]
+        static extern IntPtr GetConsoleWindow();
+        [DllImport("user32.dll")]
+        static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        static Mutex mutex = new Mutex(true, "{" + ((GuidAttribute)Attribute.GetCustomAttribute(Assembly.GetExecutingAssembly(), typeof(GuidAttribute), false)).Value.ToUpper() + "}");
+        static bool ConsoleWndowVisible = true;
+
+        public static NotifyIcon trayIcon;
+        public static ContextMenu trayMenu;
+        static void ShowHideWindow()
+        {
+            const int SW_HIDE = 0;
+            const int SW_SHOW = 5;
+
+            if (ConsoleWndowVisible)
+            {
+                ShowWindow(GetConsoleWindow(), SW_HIDE);
+                ConsoleWndowVisible = false;
+            }
+            else
+            {
+                ShowWindow(GetConsoleWindow(), SW_SHOW);
+                ConsoleWndowVisible = true;
+            }
+        }
+
+        static void OnShowHide(object sender, EventArgs e)
+        {
+            ShowHideWindow();
+        }
+
+        static void OnExit(object sender, EventArgs e)
+        {
+            trayIcon.Dispose();
+            Application.Exit();
+        }
+
         [STAThread]
         static void Main(string[] args)
         {
@@ -13,7 +55,13 @@ namespace RBCCD
             Logger logger = null;
             string ShortBookName;
             bool FirstRun = true;
-            
+
+            if (!mutex.WaitOne(TimeSpan.Zero, true))
+            {
+                Console.Write("Daemon is already running! Exiting...");
+                return;
+            }
+            Console.Title = Application.ProductName + " v" + Application.ProductVersion;
             Console.WriteLine(Application.ProductName + " v" + Application.ProductVersion);
             Console.WriteLine("(C) 2014 " + Application.CompanyName);
             Console.Write("Loading config...");
@@ -31,6 +79,30 @@ namespace RBCCD
             }
             Console.WriteLine("OK");
             Console.WriteLine();
+
+            for (int i = 0; i < config.WaitBeforeStartSeconds; i++)
+            {
+                Console.Write("Starting after " + (config.WaitBeforeStartSeconds - i) + " seconds... (Press Ctrl-C to close)\r");
+                Thread.Sleep(1000);
+                Console.Write("".PadRight(79) + "\r");
+            }
+
+            Thread notifyThread = new Thread(
+                delegate()
+                {
+                    trayMenu = new ContextMenu();
+                    trayMenu.MenuItems.Add("Show/Hide", OnShowHide);
+                    trayMenu.MenuItems.Add("Exit", OnExit);
+                    trayIcon = new NotifyIcon();
+                    trayIcon.Text = Application.ProductName;
+                    trayIcon.Icon = new Icon(SystemIcons.Application, 40, 40);
+                    trayIcon.ContextMenu = trayMenu;
+                    trayIcon.Visible = true;
+                    Application.Run();
+                });
+            notifyThread.Start();
+            
+            ShowHideWindow();
             logger.WriteToLog(Logger.Level.SUCCESS, "Daemon started successfuly.");
             try
             {
@@ -93,8 +165,8 @@ namespace RBCCD
             {
                 logger.WriteToLog(Logger.Level.ERROR, "Fatal Error! See StackTrace:\n" + e.Message + "\n" + e.StackTrace);
                 Console.ReadKey(true);
-                System.Windows.Forms.Application.Exit();
             }
+            mutex.ReleaseMutex();
         }
     }
 }

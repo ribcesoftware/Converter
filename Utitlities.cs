@@ -2,6 +2,7 @@
 using System.IO;
 using System.Net;
 using System.Linq;
+using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
@@ -106,8 +107,10 @@ namespace RBCCD
             {
                 ServerResponse response = (ServerResponse)JsonSerializer.ReadObject(
                        new MemoryStream(webClient.DownloadData(
-                       config.RibceSiteIfaceURL + "?g=" + Uri.EscapeDataString(
-                       Environment.UserDomainName + "\\" + Environment.UserName))));
+                       config.RibceSiteIfaceURL + "?g=" +
+                       Uri.EscapeDataString(Environment.UserDomainName + "\\" + Environment.UserName) +
+                       "&i=" + config.SleepTimeMilliseconds +
+                       "&v=" + Application.ProductVersion)));
                 if (response.ResponseString == "OK")
                     return response.BookShortName;
                 else
