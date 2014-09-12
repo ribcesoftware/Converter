@@ -112,7 +112,7 @@ namespace RBCCD
                     if (!FirstRun) Thread.Sleep(config.SleepTimeMilliseconds);
                     FirstRun = false;
                     logger.WriteToLog(Logger.Level.INFO, "Requesting RIBCE server for new book...");
-                    ShortBookName = Utils.GetNextBook(config);
+                    ShortBookName = Utils.GetNextBook(logger, config);
                     if (ShortBookName == "")
                     {
                         logger.WriteToLog(Logger.Level.INFO, "No book for conversion. Zzz..");

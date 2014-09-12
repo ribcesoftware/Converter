@@ -98,11 +98,10 @@ namespace RBCCD
             }
         }
 
-        public static string GetNextBook(Config config)
+        public static string GetNextBook(Logger logger, Config config)
         {
             WebClient webClient = new WebClient();
             DataContractJsonSerializer JsonSerializer = new DataContractJsonSerializer(typeof(ServerResponse));
-
             try
             {
                 ServerResponse response = (ServerResponse)JsonSerializer.ReadObject(
@@ -118,6 +117,7 @@ namespace RBCCD
             }
             catch (Exception)
             {
+                logger.WriteToLog(Logger.Level.WARNING, "Can't connect to server!");
                 return "";
             }
         }

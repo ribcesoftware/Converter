@@ -72,7 +72,7 @@ namespace RBCCD
             logFile = AppDomain.CurrentDomain.BaseDirectory + "\\log.txt";
             ribceSiteBooksURL = "http://ribce.com/books";
             ribceSiteIfaceURL = "http://ribce.com/books/cnv_iface.php";
-            sleepTimeMilliseconds = 60000;
+            sleepTimeMilliseconds = 130000;
             maxDownloadAttempt = 3;
             maxNotificationAttempt = 3;
             maxUploadAttempt = 3;
