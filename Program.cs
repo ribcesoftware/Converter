@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Reflection;
 using System.Drawing;
 using System.Text;
@@ -45,7 +46,7 @@ namespace RBCCD
         static void OnExit(object sender, EventArgs e)
         {
             trayIcon.Dispose();
-            Application.Exit();
+            Process.GetCurrentProcess().Kill();
         }
 
         [STAThread]
@@ -95,7 +96,7 @@ namespace RBCCD
                     trayMenu.MenuItems.Add("Exit", OnExit);
                     trayIcon = new NotifyIcon();
                     trayIcon.Text = Application.ProductName;
-                    trayIcon.Icon = new Icon(SystemIcons.Application, 40, 40);
+                    trayIcon.Icon = Icon.ExtractAssociatedIcon(Process.GetCurrentProcess().MainModule.FileName);
                     trayIcon.ContextMenu = trayMenu;
                     trayIcon.Visible = true;
                     Application.Run();
