@@ -5,11 +5,11 @@ This software is used to convert the ebook files into a specific format that is 
 At the moment, this converter can process the files with old and new MS Word formats (*.doc and *.docx).
 In the near future we want to add support for the following formats: 
 
-- Adobe PDF (possible solution - [iTextSharp](http://sourceforge.net/projects/itextsharp/ "iTextSharp SourceForge"), [docs](http://www.afterlogic.com/mailbee-net/docs-itextsharp/ "iTextSharp Documentation"), [useful example](http://stackoverflow.com/questions/5945244/extract-image-from-pdf-using-itextsharp "iTextSharp StackOverflow"))
+- Adobe PDF (possible solution - [iTextSharp](http://sourceforge.net/projects/itextsharp/ "iTextSharp SourceForge"), [docs](http://www.afterlogic.com/mailbee-net/docs-itextsharp/ "iTextSharp Documentation"), [useful example 1](http://stackoverflow.com/questions/5945244/extract-image-from-pdf-using-itextsharp "iTextSharp StackOverflow") and [2](http://www.codeproject.com/Questions/550990/Howplustoplusextractplusimages-cplustextplusandpl "Codeproject iTextSharp"))
 - EPUB (ePubReader [library](http://epubreader.codeplex.com/ "ePubReader on Codeplex"))
-- FB2
+- FB2 (need research)
 
-If you want to help in the development of the RIBCE project - join.
+If you want to help in the development of the RIBCE project - [**join us**](http://ribce.com "РИБСИ").
 Now this part of the project is **open source** software. 
 
 How you can help: 
