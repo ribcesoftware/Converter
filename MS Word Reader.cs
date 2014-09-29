@@ -51,7 +51,7 @@ namespace RBCCD
                 ExtractedText = UTF8Encoding.UTF8.GetString(Encoding.Convert(Encoding.Default, Encoding.UTF8, Encoding.Default.GetBytes(objParagraph.Range.Text.Trim())));
                 if (ExtractedText.Length > 1)
                 {
-                    string[] TextLines = ExtractedText.Split("\n".ToCharArray());
+                    string[] TextLines = ExtractedText.Split("\n\v\r".ToCharArray());
                     foreach (string line in TextLines)
                         if ((ExtractedLine = line.Trim()).Length > 1)
                         {

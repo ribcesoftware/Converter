@@ -83,24 +83,23 @@ namespace RBCCD
 
             for (int i = 0; i < config.WaitBeforeStartSeconds; i++)
             {
-                Console.Write("Starting after " + (config.WaitBeforeStartSeconds - i) + " seconds... (Press Ctrl-C to close)\r");
+                Console.Write("Starting after " + (config.WaitBeforeStartSeconds - i) + " seconds... (Press Ctrl-C to cancel launch)\r");
                 Thread.Sleep(1000);
                 Console.Write("".PadRight(79) + "\r");
             }
 
-            Thread notifyThread = new Thread(
-                delegate()
-                {
-                    trayMenu = new ContextMenu();
-                    trayMenu.MenuItems.Add("Show/Hide", OnShowHide);
-                    trayMenu.MenuItems.Add("Exit", OnExit);
-                    trayIcon = new NotifyIcon();
-                    trayIcon.Text = Application.ProductName;
-                    trayIcon.Icon = Icon.ExtractAssociatedIcon(Process.GetCurrentProcess().MainModule.FileName);
-                    trayIcon.ContextMenu = trayMenu;
-                    trayIcon.Visible = true;
-                    Application.Run();
-                });
+            Thread notifyThread = new Thread(delegate()
+            {
+                trayMenu = new ContextMenu();
+                trayMenu.MenuItems.Add("Show/Hide", OnShowHide);
+                trayMenu.MenuItems.Add("Exit", OnExit);
+                trayIcon = new NotifyIcon();
+                trayIcon.Text = Application.ProductName;
+                trayIcon.Icon = Icon.ExtractAssociatedIcon(Process.GetCurrentProcess().MainModule.FileName);
+                trayIcon.ContextMenu = trayMenu;
+                trayIcon.Visible = true;
+                Application.Run();
+            });
             notifyThread.Start();
             
             ShowHideWindow();
