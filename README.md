@@ -16,6 +16,7 @@ How you can help:
 ======================= 
 
 1) Add support for the formats listed above. To do this, you will need to implement a class that inherits from the abstract class *Reader* (see the file Core.cs) As an example, note how the class *MSWord_Reader* (MS Word Reader.cs) is implemented. 
+
 2) Improve the processing algorithm MS Word files. 
 
 3) You can also help us with the server part of the project too. To do this, you will need programming skills in PHP/MySQL.
