@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using Microsoft.Office.Interop.Word;
@@ -41,19 +42,23 @@ namespace RBCCD
         {
             int ProcessedParagraphs = 0;
             int index = 1;
+            string ExtractedText;
+            string ExtractedLine;
             BookParagraph output = null;
             foreach (Microsoft.Office.Interop.Word.Paragraph objParagraph in oDoc.Paragraphs)
             {
-                if ((objParagraph.Range.Text.Trim() != "") && (objParagraph.Range.Text.Trim().Length != 1))
+                // Testing strange bug with UTF-8 encoding
+                ExtractedText = UTF8Encoding.UTF8.GetString(Encoding.Convert(Encoding.Default, Encoding.UTF8, Encoding.Default.GetBytes(objParagraph.Range.Text.Trim())));
+                if (ExtractedText.Length > 1)
                 {
-                    objParagraph.Range.Select();
-                    oWord.Selection.Copy();
-                    if (Clipboard.ContainsText(TextDataFormat.Text))
-                    {
-                        if (output != null) yield return output;
-                        index++;
-                        output = new BookParagraph(BookParagraph.TYPE_ORDINARY_PAR, Clipboard.GetText(TextDataFormat.Text), index, index + 1);
-                    }
+                    string[] TextLines = ExtractedText.Split("\n".ToCharArray());
+                    foreach (string line in TextLines)
+                        if ((ExtractedLine = line.Trim()).Length > 1)
+                        {
+                            if (output != null) yield return output;
+                            index++;
+                            output = new BookParagraph(BookParagraph.TYPE_ORDINARY_PAR, ExtractedLine, index, index + 1);
+                        }
                 }
                 if (objParagraph.Range.ShapeRange.Count != 0)
                 {
