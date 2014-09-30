@@ -12,6 +12,7 @@ namespace RBCCD
         private Microsoft.Office.Interop.Word.Document oDoc = null;
         object missing = System.Reflection.Missing.Value;
         object filenameobj = null;
+
         public MSWord_Reader(string FileName)
         {
             this.FileName = FileName;
@@ -45,6 +46,15 @@ namespace RBCCD
             string ExtractedText;
             string ExtractedLine;
             BookParagraph output = null;
+            Dictionary<string, object> ClipboardBackup;
+
+            // Backup of the clipboard data
+            ClipboardBackup = new Dictionary<string, object>();
+            IDataObject ClipboardDataObject = Clipboard.GetDataObject();
+            string[] Formats = ClipboardDataObject.GetFormats(false);
+            foreach (var DataFormat in Formats)
+                ClipboardBackup.Add(DataFormat, ClipboardDataObject.GetData(DataFormat, false));
+
             foreach (Microsoft.Office.Interop.Word.Paragraph objParagraph in oDoc.Paragraphs)
             {
                 // Testing strange bug with UTF-8 encoding
@@ -88,6 +98,11 @@ namespace RBCCD
                 ProcessedParagraphs++;
                 ProgressPercentage = 100 * ProcessedParagraphs / oDoc.Paragraphs.Count;
             }
+
+            // Restoring the clipboard data from backup 
+            foreach (KeyValuePair<string, object> ClipboardData in ClipboardBackup)
+                Clipboard.SetData(ClipboardData.Key, ClipboardData.Value);
+
             ProgressPercentage = 100;
             output.NextParagraphID = -1;
             yield return output;

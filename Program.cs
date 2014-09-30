@@ -135,7 +135,13 @@ namespace RBCCD
 
                     try
                     {
-                        Utils.SendNotification(logger, config, ShortBookName, Utils.STATUS_INPROGRESS);
+                        if (!Utils.SendNotification(logger, config, ShortBookName, Utils.STATUS_INPROGRESS))
+                            if (Utils.LastServerResponse == "NOTINQUEUE")
+                            {
+                                logger.WriteToLog(Logger.Level.INFO, "Book \"" + ShortBookName + "\" is not in queue, it goes to another converter.");
+                                logger.WriteToLog(Logger.Level.INFO, "Going to the next iteration.");
+                                continue;
+                            }
                         converter.Run();
                         Utils.SendNotification(logger, config, ShortBookName, Utils.STATUS_CONVERTED);
 

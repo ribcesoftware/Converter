@@ -72,6 +72,8 @@ namespace RBCCD
 
     partial class Utils
     {
+        public static string LastServerResponse;
+
         [DataContract]
         private class ServerResponse
         {
@@ -113,7 +115,10 @@ namespace RBCCD
                 if (response.ResponseString == "OK")
                     return response.BookShortName;
                 else
+                {
+                    LastServerResponse = response.ResponseString;
                     return "";
+                }
             }
             catch (Exception)
             {
@@ -137,7 +142,7 @@ namespace RBCCD
                     logger.WriteToLog(Logger.Level.SUCCESS, "File successfuly downloaded!");
                     return true;
                 }
-                catch (WebException) { }
+                catch (WebException e) { Console.WriteLine(e.Message); }
             }
             return false;
         }
@@ -163,6 +168,7 @@ namespace RBCCD
                     }
                     else
                     {
+                        LastServerResponse = response.ResponseString;
                         logger.WriteToLog(Logger.Level.ERROR, "Sending notification server side error: " + response.ResponseString);
                         return false;
                     }
@@ -193,6 +199,7 @@ namespace RBCCD
                     }
                     else
                     {
+                        LastServerResponse = response.ResponseString;
                         logger.WriteToLog(Logger.Level.ERROR, "Uploading server side error: " + response.ResponseString);
                         return false;
                     }
