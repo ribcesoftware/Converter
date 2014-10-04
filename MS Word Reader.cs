@@ -2,6 +2,7 @@
 using System.Text;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using Microsoft.Office;
 using Microsoft.Office.Interop.Word;
 
 namespace RBCCD
@@ -39,12 +40,15 @@ namespace RBCCD
                 throw new UnsupportedFileFormatException();
             }
         }
+
         public override IEnumerator<BookParagraph> GetEnumerator()
         {
             int ProcessedParagraphs = 0;
             int index = 1;
             string ExtractedText;
             string ExtractedLine;
+            string TestString = "";
+            Encoding TextEncoding;
             BookParagraph output = null;
             Dictionary<string, object> ClipboardBackup;
 
@@ -57,10 +61,20 @@ namespace RBCCD
 
             foreach (Microsoft.Office.Interop.Word.Paragraph objParagraph in oDoc.Paragraphs)
             {
-                // Testing strange bug with UTF-8 encoding
-                ExtractedText = UTF8Encoding.UTF8.GetString(Encoding.Convert(Encoding.Default, Encoding.UTF8, Encoding.Default.GetBytes(objParagraph.Range.Text.Trim())));
+                TestString += objParagraph.Range.Text.Trim();
+                if (TestString.Length >= 1024) break;
+            }
+
+            TextEncoding = EncodingTools.GetMostEfficientEncoding(TestString);
+            // MessageBox.Show(TextEncoding.CodePage.ToString() + " " + TextEncoding.BodyName + " " + TextEncoding.EncodingName);
+            foreach (Microsoft.Office.Interop.Word.Paragraph objParagraph in oDoc.Paragraphs)
+            {
+                objParagraph.Range.TextRetrievalMode.IncludeHiddenText = true;
+                objParagraph.Range.TextRetrievalMode.IncludeFieldCodes = true;
+                ExtractedText = objParagraph.Range.Text.Trim();
                 if (ExtractedText.Length > 1)
                 {
+                    ExtractedText = Encoding.UTF8.GetString(Encoding.Convert(TextEncoding, Encoding.UTF8, TextEncoding.GetBytes(ExtractedText)));
                     string[] TextLines = ExtractedText.Split("\n\v\r".ToCharArray());
                     foreach (string line in TextLines)
                         if ((ExtractedLine = line.Trim()).Length > 1)

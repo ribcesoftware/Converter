@@ -72,7 +72,49 @@
     <Compile Include="Config.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Core.cs" />
+    <Compile Include="EncodingTools.cs" />
     <Compile Include="MS Word Reader.cs" />
+    <Compile Include="Multilang\CMLangConvertCharset.cs" />
+    <Compile Include="Multilang\CMLangConvertCharsetClass.cs" />
+    <Compile Include="Multilang\CMLangString.cs" />
+    <Compile Include="Multilang\CMLangStringClass.cs" />
+    <Compile Include="Multilang\CMultiLanguage.cs" />
+    <Compile Include="Multilang\CMultiLanguageClass.cs" />
+    <Compile Include="Multilang\IEnumCodePage.cs" />
+    <Compile Include="Multilang\IEnumRfc1766.cs" />
+    <Compile Include="Multilang\IEnumScript.cs" />
+    <Compile Include="Multilang\IMLangCodePages.cs" />
+    <Compile Include="Multilang\IMLangConvertCharset.cs" />
+    <Compile Include="Multilang\IMLangFontLink.cs" />
+    <Compile Include="Multilang\IMLangFontLink2.cs" />
+    <Compile Include="Multilang\IMLangLineBreakConsole.cs" />
+    <Compile Include="Multilang\IMLangString.cs" />
+    <Compile Include="Multilang\IMLangStringAStr.cs" />
+    <Compile Include="Multilang\IMLangStringBufA.cs" />
+    <Compile Include="Multilang\IMLangStringBufW.cs" />
+    <Compile Include="Multilang\IMLangStringWStr.cs" />
+    <Compile Include="Multilang\IMultiLanguage.cs" />
+    <Compile Include="Multilang\IMultiLanguage2.cs" />
+    <Compile Include="Multilang\IMultiLanguage3.cs" />
+    <Compile Include="Multilang\ISequentialStream.cs" />
+    <Compile Include="Multilang\IStream.cs" />
+    <Compile Include="Multilang\tagDetectEncodingInfo.cs" />
+    <Compile Include="Multilang\tagMIMECONTF.cs" />
+    <Compile Include="Multilang\tagMIMECPINFO.cs" />
+    <Compile Include="Multilang\tagMIMECSETINFO.cs" />
+    <Compile Include="Multilang\tagMLCPF.cs" />
+    <Compile Include="Multilang\tagMLDETECTCP.cs" />
+    <Compile Include="Multilang\tagMLSTR_FLAGS.cs" />
+    <Compile Include="Multilang\tagRFC1766INFO.cs" />
+    <Compile Include="Multilang\tagSCRIPFONTINFO.cs" />
+    <Compile Include="Multilang\tagSCRIPTINFO.cs" />
+    <Compile Include="Multilang\tagSTATSTG.cs" />
+    <Compile Include="Multilang\tagUNICODERANGE.cs" />
+    <Compile Include="Multilang\_FILETIME.cs" />
+    <Compile Include="Multilang\_LARGE_INTEGER.cs" />
+    <Compile Include="Multilang\_RemotableHandle.cs" />
+    <Compile Include="Multilang\_ULARGE_INTEGER.cs" />
+    <Compile Include="Multilang\__MIDL_IWinTypes_0009.cs" />
     <Compile Include="SharpZipLib\Checksums\Adler32.cs" />
     <Compile Include="SharpZipLib\Checksums\CRC32.cs" />
     <Compile Include="SharpZipLib\Checksums\IChecksum.cs" />
@@ -157,6 +199,26 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="cat.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="Microsoft.Office.Core">
+      <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>7</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="VBIDE">
+      <Guid>{0002E157-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>5</VersionMajor>
+      <VersionMinor>3</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
