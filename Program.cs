@@ -9,44 +9,92 @@ using System.Threading;
 
 namespace RBCCD
 {
-    class Program
+    partial class Program
     {
         [DllImport("kernel32.dll")]
         static extern IntPtr GetConsoleWindow();
         [DllImport("user32.dll")]
         static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
+        [DllImport("user32.dll")]
+        static extern bool EnableMenuItem(IntPtr hMenu, uint uIDEnableItem, uint uEnable);
+        [DllImport("user32.dll")]
+        static extern IntPtr GetSystemMenu(IntPtr hWnd, bool bRevert);
+        [DllImport("user32.dll")]
+        static extern IntPtr RemoveMenu(IntPtr hMenu, uint nPosition, uint wFlags);
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool GetWindowPlacement(IntPtr hWnd, ref WINDOWPLACEMENT lpwndpl);
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool SetForegroundWindow(IntPtr hWnd);
+
         static Mutex mutex = new Mutex(true, "{" + ((GuidAttribute)Attribute.GetCustomAttribute(Assembly.GetExecutingAssembly(), typeof(GuidAttribute), false)).Value.ToUpper() + "}");
-        static bool ConsoleWndowVisible = true;
 
-        public static NotifyIcon trayIcon;
-        public static ContextMenu trayMenu;
-        static void ShowHideWindow()
+        static NotifyIcon trayIcon;
+        static ContextMenu trayMenu;
+        static System.Threading.Timer timerObject = null;
+
+        private struct WINDOWPLACEMENT
         {
-            const int SW_HIDE = 0;
-            const int SW_SHOW = 5;
-
-            if (ConsoleWndowVisible)
-            {
-                ShowWindow(GetConsoleWindow(), SW_HIDE);
-                ConsoleWndowVisible = false;
-            }
-            else
-            {
-                ShowWindow(GetConsoleWindow(), SW_SHOW);
-                ConsoleWndowVisible = true;
-            }
+            public int length;
+            public int flags;
+            public int showCmd;
+            public System.Drawing.Point ptMinPosition;
+            public System.Drawing.Point ptMaxPosition;
+            public System.Drawing.Rectangle rcNormalPosition;
         }
 
-        static void OnShowHide(object sender, EventArgs e)
+        public static bool GetMinimized()
         {
-            ShowHideWindow();
+            WINDOWPLACEMENT placement = new WINDOWPLACEMENT();
+            placement.length = Marshal.SizeOf(placement);
+            GetWindowPlacement(Process.GetCurrentProcess().MainWindowHandle, ref placement);
+            return placement.showCmd == SW_SHOWMINIMIZED;
         }
 
-        static void OnExit(object sender, EventArgs e)
+        public static bool GetVisible()
+        {
+            WINDOWPLACEMENT placement = new WINDOWPLACEMENT();
+            placement.length = Marshal.SizeOf(placement);
+            GetWindowPlacement(Process.GetCurrentProcess().MainWindowHandle, ref placement);
+            return placement.showCmd != SW_HIDE;
+        }
+
+        static void ShowConsoleWindow()
+        {
+            ShowWindow(GetConsoleWindow(), SW_SHOWNORMAL);
+            SetForegroundWindow(GetConsoleWindow());
+            timerObject = new System.Threading.Timer(new TimerCallback(TimerTick), null, 2000, 100);
+        }
+
+        static void HideConsoleWindow()
+        {
+            ShowWindow(GetConsoleWindow(), SW_HIDE);
+            if (timerObject != null)
+                timerObject.Dispose();
+        }
+
+        static void OnMenuShowLogClick(object sender, EventArgs e)
+        {
+            ShowConsoleWindow();
+        }
+
+        static void OnMenuHideLogClick(object sender, EventArgs e)
+        {
+            HideConsoleWindow();
+        }
+
+        static void OnMenuExit(object sender, EventArgs e)
         {
             trayIcon.Dispose();
             Process.GetCurrentProcess().Kill();
+        }
+
+        static void TimerTick(object state)
+        {
+            if (GetMinimized())
+                HideConsoleWindow();
         }
 
         [STAThread]
@@ -71,12 +119,13 @@ namespace RBCCD
                 config = new Config();
                 logger = new Logger(config.LogFile, config.LogToConsole);
             }
-            catch(Exception)
+            catch(Exception e)
             {
+                Console.WriteLine(e.Message);
                 Console.WriteLine("FAILED");
                 Console.Write("Press any key to exit...");
                 Console.ReadKey(true);
-                System.Windows.Forms.Application.Exit();
+                Process.GetCurrentProcess().Kill();
             }
             Console.WriteLine("OK");
             Console.WriteLine();
@@ -91,18 +140,27 @@ namespace RBCCD
             Thread notifyThread = new Thread(delegate()
             {
                 trayMenu = new ContextMenu();
-                trayMenu.MenuItems.Add("Show/Hide", OnShowHide);
-                trayMenu.MenuItems.Add("Exit", OnExit);
+                trayMenu.MenuItems.Add("Show log window", OnMenuShowLogClick);
+                trayMenu.MenuItems.Add("Hide log window", OnMenuHideLogClick);
+                trayMenu.MenuItems.Add("Shutdown Converter", OnMenuExit);
+                trayMenu.MenuItems[0].DefaultItem = true;
                 trayIcon = new NotifyIcon();
                 trayIcon.Text = Application.ProductName;
                 trayIcon.Icon = Icon.ExtractAssociatedIcon(Process.GetCurrentProcess().MainModule.FileName);
                 trayIcon.ContextMenu = trayMenu;
+                trayIcon.Click += OnMenuShowLogClick;
+                trayIcon.DoubleClick += OnMenuShowLogClick;
                 trayIcon.Visible = true;
                 Application.Run();
             });
             notifyThread.Start();
+            Console.TreatControlCAsInput = true;
+            Console.Title = Application.ProductName + " v" + Application.ProductVersion + " | Click min button to hide this window \u2192";
+            IntPtr hSystemMenu = GetSystemMenu(Process.GetCurrentProcess().MainWindowHandle, false);
+            EnableMenuItem(hSystemMenu, SC_CLOSE, MF_GRAYED);
+            RemoveMenu(hSystemMenu, SC_CLOSE, MF_BYCOMMAND);
+            HideConsoleWindow();
             
-            ShowHideWindow();
             logger.WriteToLog(Logger.Level.SUCCESS, "Daemon started successfuly.");
             try
             {

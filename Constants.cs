@@ -5,6 +5,21 @@ using System.Text;
 
 namespace RBCCD
 {
+    partial class Config
+    {
+        private const string CONFIG_FILENAME = "config.txt";
+        private const char CONFIG_COMMENT_SYMBOL = '#';
+        private const bool CONFIG_DEFAULT_LOG_TO_CONSOLE = true;
+        private const string CONFIG_DEFAULT_TMP_DIR = "\\tmp";
+        private const string CONFIG_DEFAULT_LOG_FILE = "\\log.txt";
+        private const string CONFIG_DEFAULT_RIBCE_BOOK_URL = "http://ribce.com/books";
+        private const string CONFIG_DEFAULT_RIBCE_CNV_IFACE_URL = "http://ribce.com/books/cnv_iface.php";
+        private const int CONFIG_DEFAULT_SLEEP_TIME = 60000;
+        private const int CONFIG_DEFAULT_MAX_DOWNLOAD_ATTEMPT = 3;
+        private const int CONFIG_DEFAULT_MAX_UPLOAD_ATTEMPT = 3;
+        private const int CONFIG_DEFAULT_MAX_NOTIFICATION_ATTEMPT = 3;
+        private const int CONFIG_DEFAULT_WAIT_BEFORE_START_SECONDS = 10;
+    }
     partial class BookParagraph
     {
         public const int TYPE_META = 0;
@@ -36,5 +51,16 @@ namespace RBCCD
     {
         private byte[] OldMSWordSignature = { 0xD0, 0xCF, 0x11, 0xE0, 0xA1, 0xB1, 0x1A, 0xE1 };
         private byte[] NewMSWordSignature = { 0x50, 0x4B, 0x03, 0x04 };
+    }
+
+    partial class Program
+    {
+        private const int SW_HIDE = 0;
+        private const int SW_SHOWNORMAL = 1;
+        private const int SW_SHOWMINIMIZED = 2;
+        private const int SC_CLOSE = 0xF060;
+        private const int MF_ENABLED = 0;
+        private const int MF_GRAYED = 1;
+        private const int MF_BYCOMMAND = 0;
     }
 }
