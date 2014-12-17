@@ -85,6 +85,14 @@ namespace RBCCD
             HideConsoleWindow();
         }
 
+        static void OnIconClick(object sender, EventArgs e)
+        {
+            if (GetVisible())
+                HideConsoleWindow();
+            else
+                ShowConsoleWindow();
+        }
+
         static void OnMenuExit(object sender, EventArgs e)
         {
             trayIcon.Dispose();
@@ -119,9 +127,8 @@ namespace RBCCD
                 config = new Config();
                 logger = new Logger(config.LogFile, config.LogToConsole);
             }
-            catch(Exception e)
+            catch(Exception)
             {
-                Console.WriteLine(e.Message);
                 Console.WriteLine("FAILED");
                 Console.Write("Press any key to exit...");
                 Console.ReadKey(true);
@@ -148,12 +155,14 @@ namespace RBCCD
                 trayIcon.Text = Application.ProductName;
                 trayIcon.Icon = Icon.ExtractAssociatedIcon(Process.GetCurrentProcess().MainModule.FileName);
                 trayIcon.ContextMenu = trayMenu;
-                trayIcon.Click += OnMenuShowLogClick;
-                trayIcon.DoubleClick += OnMenuShowLogClick;
+                trayIcon.Click += OnIconClick;
+                trayIcon.DoubleClick += OnIconClick;
                 trayIcon.Visible = true;
                 Application.Run();
             });
+
             notifyThread.Start();
+
             Console.TreatControlCAsInput = true;
             Console.Title = Application.ProductName + " v" + Application.ProductVersion + " | Click min button to hide this window \u2192";
             IntPtr hSystemMenu = GetSystemMenu(Process.GetCurrentProcess().MainWindowHandle, false);

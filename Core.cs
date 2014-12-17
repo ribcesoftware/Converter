@@ -3,6 +3,7 @@ using System.IO;
 using ICSharpCode.SharpZipLib.Tar;
 using ICSharpCode.SharpZipLib.GZip;
 using System.Linq;
+using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -34,6 +35,8 @@ namespace RBCCD
         {
             MSWORD_OLD,
             MSWORD_NEW,
+            PDF,
+            FB2,
             UNKNOWN
         }
 
@@ -55,6 +58,10 @@ namespace RBCCD
                 return SourceFileType.MSWORD_OLD;
             else if (NewMSWordSignature.SequenceEqual(buffer.Take(NewMSWordSignature.Length)))
                 return SourceFileType.MSWORD_NEW;
+            else if (PDFSignature.SequenceEqual(buffer.Take(PDFSignature.Length)))
+                return SourceFileType.PDF;
+            else if ((Encoding.ASCII.GetString(buffer).IndexOf("<FictionBook") != -1) || (Encoding.UTF8.GetString(buffer).IndexOf("<FictionBook") != -1))
+                return SourceFileType.FB2;
             else
                 return SourceFileType.UNKNOWN;
         }
@@ -83,6 +90,14 @@ namespace RBCCD
                 case SourceFileType.MSWORD_NEW:
                     logger.WriteToLog(Logger.Level.INFO, "New MS Word *.docx file!");
                     reader = new MSWord_Reader(SourceFileName);
+                    break;
+                case SourceFileType.PDF:
+                    logger.WriteToLog(Logger.Level.INFO, "Portable Document Format *.pdf file!");
+                    reader = new PDF_Reader(SourceFileName);
+                    break;
+                case SourceFileType.FB2:
+                    logger.WriteToLog(Logger.Level.INFO, "FictionBook Format *.fb2 file!");
+                    reader = new FB2_Reader(SourceFileName);
                     break;
                 case SourceFileType.UNKNOWN:
                 default:

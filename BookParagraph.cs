@@ -40,7 +40,6 @@ namespace RBCCD
             this.ChildID = ChildID;
             this.Level = Level;
             ImageSavedFlag = false;
-            ImgFilePath = Path.GetTempFileName();
         }
 
         private byte[] DoEncryption(byte[] data)

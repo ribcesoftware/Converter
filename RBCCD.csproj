@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="packages\MSBuild.ILMerge.Task.1.0.2\build\MSBuild.ILMerge.Task.props" Condition="Exists('packages\MSBuild.ILMerge.Task.1.0.2\build\MSBuild.ILMerge.Task.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -54,6 +55,12 @@
     <ApplicationIcon>cat.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp">
+      <HintPath>packages\iTextSharp.5.5.3\lib\itextsharp.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Office.Interop.Word, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
@@ -66,6 +73,7 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BookParagraph.cs" />
@@ -73,6 +81,51 @@
     <Compile Include="Constants.cs" />
     <Compile Include="Core.cs" />
     <Compile Include="EncodingTools.cs" />
+    <Compile Include="FB2 Reader.cs" />
+    <Compile Include="FB2Library\Elements\AnnotationItem.cs" />
+    <Compile Include="FB2Library\Elements\AnnotationType.cs" />
+    <Compile Include="FB2Library\Elements\AuthorItem.cs" />
+    <Compile Include="FB2Library\Elements\AuthorType.cs" />
+    <Compile Include="FB2Library\Elements\BinaryItem.cs" />
+    <Compile Include="FB2Library\Elements\BodyItem.cs" />
+    <Compile Include="FB2Library\Elements\CiteItem.cs" />
+    <Compile Include="FB2Library\Elements\CustomTextFieldType.cs" />
+    <Compile Include="FB2Library\Elements\DateItem.cs" />
+    <Compile Include="FB2Library\Elements\EmptyLineItem.cs" />
+    <Compile Include="FB2Library\Elements\EpigraphItem.cs" />
+    <Compile Include="FB2Library\Elements\FB2Const.cs" />
+    <Compile Include="FB2Library\Elements\FB2TextItem.cs" />
+    <Compile Include="FB2Library\Elements\GenreType.cs" />
+    <Compile Include="FB2Library\Elements\ImageItem.cs" />
+    <Compile Include="FB2Library\Elements\InlineImageItem.cs" />
+    <Compile Include="FB2Library\Elements\InternalLinkItem.cs" />
+    <Compile Include="FB2Library\Elements\OutPutDocumentType.cs" />
+    <Compile Include="FB2Library\Elements\ParagraphItem.cs" />
+    <Compile Include="FB2Library\Elements\PartShareInstructionType.cs" />
+    <Compile Include="FB2Library\Elements\Poem\PoemItem.cs" />
+    <Compile Include="FB2Library\Elements\Poem\StanzaItem.cs" />
+    <Compile Include="FB2Library\Elements\Poem\VPoemParagraph.cs" />
+    <Compile Include="FB2Library\Elements\SectionItem.cs" />
+    <Compile Include="FB2Library\Elements\SequenceType.cs" />
+    <Compile Include="FB2Library\Elements\ShareInstructionType.cs" />
+    <Compile Include="FB2Library\Elements\SimpleText.cs" />
+    <Compile Include="FB2Library\Elements\StyleElement.cs" />
+    <Compile Include="FB2Library\Elements\SubTitleItem.cs" />
+    <Compile Include="FB2Library\Elements\Table\BaseCellElement.cs" />
+    <Compile Include="FB2Library\Elements\Table\TableCellItem.cs" />
+    <Compile Include="FB2Library\Elements\Table\TableHeadingItem.cs" />
+    <Compile Include="FB2Library\Elements\Table\TableItem.cs" />
+    <Compile Include="FB2Library\Elements\Table\TableRowItem.cs" />
+    <Compile Include="FB2Library\Elements\TextAuthorItem.cs" />
+    <Compile Include="FB2Library\Elements\TextFieldType.cs" />
+    <Compile Include="FB2Library\Elements\TitleItem.cs" />
+    <Compile Include="FB2Library\FB2File.cs" />
+    <Compile Include="FB2Library\HeaderItems\CoverPage.cs" />
+    <Compile Include="FB2Library\HeaderItems\CustomInfo.cs" />
+    <Compile Include="FB2Library\HeaderItems\ItemDocumentInfo.cs" />
+    <Compile Include="FB2Library\HeaderItems\ItemInfoBase.cs" />
+    <Compile Include="FB2Library\HeaderItems\ItemPublishInfo.cs" />
+    <Compile Include="FB2Library\HeaderItems\ItemTitleInfo.cs" />
     <Compile Include="MS Word Reader.cs" />
     <Compile Include="Multilang\CMLangConvertCharset.cs" />
     <Compile Include="Multilang\CMLangConvertCharsetClass.cs" />
@@ -115,65 +168,15 @@
     <Compile Include="Multilang\_RemotableHandle.cs" />
     <Compile Include="Multilang\_ULARGE_INTEGER.cs" />
     <Compile Include="Multilang\__MIDL_IWinTypes_0009.cs" />
-    <Compile Include="SharpZipLib\Checksums\Adler32.cs" />
-    <Compile Include="SharpZipLib\Checksums\CRC32.cs" />
-    <Compile Include="SharpZipLib\Checksums\IChecksum.cs" />
-    <Compile Include="SharpZipLib\Checksums\StrangeCRC.cs" />
-    <Compile Include="SharpZipLib\Core\FileSystemScanner.cs" />
-    <Compile Include="SharpZipLib\Core\INameTransform.cs" />
-    <Compile Include="SharpZipLib\Core\IScanFilter.cs" />
-    <Compile Include="SharpZipLib\Core\NameFilter.cs" />
-    <Compile Include="SharpZipLib\Core\PathFilter.cs" />
-    <Compile Include="SharpZipLib\Core\StreamUtils.cs" />
-    <Compile Include="SharpZipLib\Core\WindowsPathUtils.cs" />
-    <Compile Include="SharpZipLib\Encryption\PkzipClassic.cs" />
-    <Compile Include="SharpZipLib\Encryption\ZipAESStream.cs" />
-    <Compile Include="SharpZipLib\Encryption\ZipAESTransform.cs" />
-    <Compile Include="SharpZipLib\GZip\GZIPConstants.cs" />
-    <Compile Include="SharpZipLib\GZip\GZipException.cs" />
-    <Compile Include="SharpZipLib\GZip\GzipInputStream.cs" />
-    <Compile Include="SharpZipLib\GZip\GzipOutputStream.cs" />
+    <Compile Include="PDF Reader.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SharpZipLib\SharpZipBaseException.cs" />
-    <Compile Include="SharpZipLib\Tar\InvalidHeaderException.cs" />
-    <Compile Include="SharpZipLib\Tar\TarArchive.cs" />
-    <Compile Include="SharpZipLib\Tar\TarBuffer.cs" />
-    <Compile Include="SharpZipLib\Tar\TarEntry.cs" />
-    <Compile Include="SharpZipLib\Tar\TarException.cs" />
-    <Compile Include="SharpZipLib\Tar\TarHeader.cs" />
-    <Compile Include="SharpZipLib\Tar\TarInputStream.cs" />
-    <Compile Include="SharpZipLib\Tar\TarOutputStream.cs" />
-    <Compile Include="SharpZipLib\Zip\Compression\Deflater.cs" />
-    <Compile Include="SharpZipLib\Zip\Compression\DeflaterConstants.cs" />
-    <Compile Include="SharpZipLib\Zip\Compression\DeflaterEngine.cs" />
-    <Compile Include="SharpZipLib\Zip\Compression\DeflaterHuffman.cs" />
-    <Compile Include="SharpZipLib\Zip\Compression\DeflaterPending.cs" />
-    <Compile Include="SharpZipLib\Zip\Compression\Inflater.cs" />
-    <Compile Include="SharpZipLib\Zip\Compression\InflaterDynHeader.cs" />
-    <Compile Include="SharpZipLib\Zip\Compression\InflaterHuffmanTree.cs" />
-    <Compile Include="SharpZipLib\Zip\Compression\PendingBuffer.cs" />
-    <Compile Include="SharpZipLib\Zip\Compression\Streams\DeflaterOutputStream.cs" />
-    <Compile Include="SharpZipLib\Zip\Compression\Streams\InflaterInputStream.cs" />
-    <Compile Include="SharpZipLib\Zip\Compression\Streams\OutputWindow.cs" />
-    <Compile Include="SharpZipLib\Zip\Compression\Streams\StreamManipulator.cs" />
-    <Compile Include="SharpZipLib\Zip\FastZip.cs" />
-    <Compile Include="SharpZipLib\Zip\IEntryFactory.cs" />
-    <Compile Include="SharpZipLib\Zip\WindowsNameTransform.cs" />
-    <Compile Include="SharpZipLib\Zip\ZipConstants.cs" />
-    <Compile Include="SharpZipLib\Zip\ZipEntry.cs" />
-    <Compile Include="SharpZipLib\Zip\ZipEntryFactory.cs" />
-    <Compile Include="SharpZipLib\Zip\ZipException.cs" />
-    <Compile Include="SharpZipLib\Zip\ZipExtraData.cs" />
-    <Compile Include="SharpZipLib\Zip\ZipFile.cs" />
-    <Compile Include="SharpZipLib\Zip\ZipHelperStream.cs" />
-    <Compile Include="SharpZipLib\Zip\ZipInputStream.cs" />
-    <Compile Include="SharpZipLib\Zip\ZipNameTransform.cs" />
-    <Compile Include="SharpZipLib\Zip\ZipOutputStream.cs" />
     <Compile Include="Utitlities.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="ILMerge.props" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
@@ -199,6 +202,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="cat.ico" />
+    <Content Include="ILMergeOrder.txt" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="Microsoft.Office.Core">
@@ -221,6 +225,7 @@
     </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="packages\MSBuild.ILMerge.Task.1.0.2\build\MSBuild.ILMerge.Task.targets" Condition="Exists('packages\MSBuild.ILMerge.Task.1.0.2\build\MSBuild.ILMerge.Task.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

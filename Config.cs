@@ -127,7 +127,7 @@ namespace RBCCD
                     throw new InvalidConfigFileRecord();
                 else
                 {
-                    if ((sleepTimeMilliseconds < 0) || (sleepTimeMilliseconds > 10))
+                    if ((sleepTimeMilliseconds < 1000) || (sleepTimeMilliseconds > 1000000))
                         throw new InvalidConfigFileRecord();
                 }
             else
@@ -138,7 +138,7 @@ namespace RBCCD
                     throw new InvalidConfigFileRecord();
                 else
                 {
-                    if ((maxDownloadAttempt < 0) || (maxDownloadAttempt > 10))
+                    if ((maxDownloadAttempt < 1) || (maxDownloadAttempt > 10))
                         throw new InvalidConfigFileRecord();
                 }
             else
@@ -149,7 +149,7 @@ namespace RBCCD
                     throw new InvalidConfigFileRecord();
                 else
                 {
-                    if ((maxNotificationAttempt < 0) || (maxNotificationAttempt > 10))
+                    if ((maxNotificationAttempt < 1) || (maxNotificationAttempt > 10))
                         throw new InvalidConfigFileRecord();
                 }
             else
@@ -160,7 +160,7 @@ namespace RBCCD
                     throw new InvalidConfigFileRecord();
                 else
                 {
-                    if ((maxUploadAttempt < 0) || (maxUploadAttempt > 1000))
+                    if ((maxUploadAttempt < 1) || (maxUploadAttempt > 1000))
                         throw new InvalidConfigFileRecord();
                 }
             else

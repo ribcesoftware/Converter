@@ -18,7 +18,7 @@ namespace RBCCD
         private const int CONFIG_DEFAULT_MAX_DOWNLOAD_ATTEMPT = 3;
         private const int CONFIG_DEFAULT_MAX_UPLOAD_ATTEMPT = 3;
         private const int CONFIG_DEFAULT_MAX_NOTIFICATION_ATTEMPT = 3;
-        private const int CONFIG_DEFAULT_WAIT_BEFORE_START_SECONDS = 10;
+        private const int CONFIG_DEFAULT_WAIT_BEFORE_START_SECONDS = 0;
     }
     partial class BookParagraph
     {
@@ -51,6 +51,7 @@ namespace RBCCD
     {
         private byte[] OldMSWordSignature = { 0xD0, 0xCF, 0x11, 0xE0, 0xA1, 0xB1, 0x1A, 0xE1 };
         private byte[] NewMSWordSignature = { 0x50, 0x4B, 0x03, 0x04 };
+        private byte[] PDFSignature = { 0x25, 0x50, 0x44, 0x46 };
     }
 
     partial class Program
