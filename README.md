@@ -2,12 +2,16 @@ RIBCE Books Converter
 =====================
 
 This software is used to convert the ebook files into a specific format that is used on the [RIBCE Book Lab](http://ribce.com "РИБСИ"). 
-At the moment, this converter can process the files with old and new MS Word formats (*.doc and *.docx).
+At the moment, this converter can process:
+- Old MS Word files (*.doc)
+- New MS Word files (*.docx)
+- Adobe PDF
+- FB2
+
 In the near future we want to add support for the following formats: 
 
-- Adobe PDF (possible solution - [iTextSharp](http://sourceforge.net/projects/itextsharp/ "iTextSharp SourceForge"), [docs](http://www.afterlogic.com/mailbee-net/docs-itextsharp/ "iTextSharp Documentation"), [useful example 1](http://stackoverflow.com/questions/5945244/extract-image-from-pdf-using-itextsharp "iTextSharp StackOverflow") and [2](http://www.codeproject.com/Questions/550990/Howplustoplusextractplusimages-cplustextplusandpl "Codeproject iTextSharp"))
 - EPUB (ePubReader [library](http://epubreader.codeplex.com/ "ePubReader on Codeplex"))
-- FB2 (need research)
+- MOBI (useful [util](http://www.mobileread.com/forums/showthread.php?t=185565 "Mobi Metadata Reader .Net (C# / .Net 4.0)")
 
 If you want to help in the development of the RIBCE project - [**join us**](http://ribce.com "РИБСИ").
 Now, this part of the project is **open source** software, which undergoes a continuous integration and testing. 
