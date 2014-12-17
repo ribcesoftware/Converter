@@ -11,7 +11,7 @@ At the moment, this converter can process:
 In the near future we want to add support for the following formats: 
 
 - EPUB (ePubReader [library](http://epubreader.codeplex.com/ "ePubReader on Codeplex"))
-- MOBI (useful [util](http://www.mobileread.com/forums/showthread.php?t=185565 "Mobi Metadata Reader .Net (C# / .Net 4.0)"))
+- MOBI (useful [util](http://www.mobileread.com/forums/showthread.php?t=185565 "Mobi Metadata Reader .Net (C# / .Net 4.0)") & possible [solution](http://www.strathweb.com/2012/09/generate-kindle-mobi-ebooks-with-your-asp-net-web-api/ "Generate Kindle (MOBI) ebooks with your ASP.NET Web API"))
 
 If you want to help in the development of the RIBCE project - [**join us**](http://ribce.com "РИБСИ").
 Now, this part of the project is **open source** software, which undergoes a continuous integration and testing. 
