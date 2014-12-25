@@ -6,7 +6,7 @@ At the moment, this converter can process:
 - Old MS Word files (*.doc)
 - New MS Word files (*.docx)
 - Adobe PDF
-- FB2
+- Fiction Book format (*.fb2)
 
 In the near future we want to add support for the following formats: 
 
@@ -23,6 +23,8 @@ How you can help
 
 2) Improve the processing algorithm for MS Word files and, possibly, escape from the *Microsoft.Office.Interop* component dependency.
 
-3) You can also help us with the server part of the project. To do this, you will need programming skills in PHP/MySQL.
+3) Improve the stability & quality of Adobe PDF files conversion.
+
+4) You can also help us with the server part of the project. To do this, you will need programming skills in PHP/MySQL.
 
 For all inquiries please mail to contact@ribce.com
