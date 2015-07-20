@@ -16,11 +16,30 @@ namespace RBCCD
     {
         FB2File FB2FileObj = null;
         Stream fileStream = null;
+        List<IFb2TextItem> availItems;
 
         public FB2_Reader(string FileName)
         {
             this.FileName = FileName;
         }
+
+        /*
+        private void ScanFB2Items(IFb2TextItem rootItem)
+        {
+            if (rootItem is BodyItem)
+                foreach (SectionItem sectionItem in ((BodyItem)rootItem).Sections)
+                    ScanFB2Items(sectionItem);
+            else if (rootItem is SectionItem)
+            {
+                foreach (IFb2TextItem item in ((SectionItem)rootItem).)
+                    ScanFB2Items(sectionItem);
+                foreach (IFb2TextItem item in ((SectionItem)rootItem).Content)
+                    ScanFB2Items(sectionItem);
+            }
+            else if ()
+        }
+        */
+
         public override void Open()
         {
             ProgressPercentage = 0;
@@ -29,6 +48,7 @@ namespace RBCCD
                 FB2FileObj = new FB2File();
                 fileStream = File.OpenRead(FileName);
                 FB2FileObj.Load(XDocument.Load(XmlReader.Create(fileStream, new XmlReaderSettings { ValidationType = ValidationType.None, ProhibitDtd = false }), LoadOptions.PreserveWhitespace), false);
+                availItems.Clear();
             }
             catch (Exception)
             {

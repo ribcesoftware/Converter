@@ -172,17 +172,11 @@ namespace RBCCD
         {
             try
             {
-                PDFReaderObj.Close();
+                if (PDFReaderObj != null) PDFReaderObj.Close();
             }
-            catch (Exception)
-            {
-                throw new InternalErrorException();
-            }
-            finally
-            {
-                PDFParserObj = null;
-                PDFReaderObj = null;
-            }
+            catch (Exception) { }
+            PDFParserObj = null;
+            PDFReaderObj = null;
         }
     }
 }
