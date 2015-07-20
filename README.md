@@ -2,12 +2,16 @@ RIBCE Books Converter
 =====================
 
 This software is used to convert the ebook files into a specific format that is used on the [RIBCE Book Lab](http://ribce.com "РИБСИ"). 
-At the moment, this converter can process the files with old and new MS Word formats (*.doc and *.docx).
+At the moment, this converter can process:
+- Old MS Word files (*.doc)
+- New MS Word files (*.docx)
+- Adobe PDF
+- Fiction Book format (*.fb2)
+
 In the near future we want to add support for the following formats: 
 
-- Adobe PDF (possible solution - [iTextSharp](http://sourceforge.net/projects/itextsharp/ "iTextSharp SourceForge"), [docs](http://www.afterlogic.com/mailbee-net/docs-itextsharp/ "iTextSharp Documentation"), [useful example 1](http://stackoverflow.com/questions/5945244/extract-image-from-pdf-using-itextsharp "iTextSharp StackOverflow") and [2](http://www.codeproject.com/Questions/550990/Howplustoplusextractplusimages-cplustextplusandpl "Codeproject iTextSharp"))
 - EPUB (ePubReader [library](http://epubreader.codeplex.com/ "ePubReader on Codeplex"))
-- FB2 (need research)
+- MOBI (useful [util](http://www.mobileread.com/forums/showthread.php?t=185565 "Mobi Metadata Reader .Net (C# / .Net 4.0)") & possible [solution](http://www.strathweb.com/2012/09/generate-kindle-mobi-ebooks-with-your-asp-net-web-api/ "Generate Kindle (MOBI) ebooks with your ASP.NET Web API"))
 
 If you want to help in the development of the RIBCE project - [**join us**](http://ribce.com "РИБСИ").
 Now, this part of the project is **open source** software, which undergoes a continuous integration and testing. 
@@ -19,6 +23,8 @@ How you can help
 
 2) Improve the processing algorithm for MS Word files and, possibly, escape from the *Microsoft.Office.Interop* component dependency.
 
-3) You can also help us with the server part of the project. To do this, you will need programming skills in PHP/MySQL.
+3) Improve the stability & quality of Adobe PDF files conversion.
+
+4) You can also help us with the server part of the project. To do this, you will need programming skills in PHP/MySQL.
 
 For all inquiries please mail to contact@ribce.com
